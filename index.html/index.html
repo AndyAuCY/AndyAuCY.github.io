@@ -163,6 +163,218 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://andyaucy.github.io/2021/01/15/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E8%A3%85%E9%A5%B0%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Andy Au">
+      <meta itemprop="description" content="自我感觉良好往往是出现问题的征兆">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Make it Happen">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/15/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E8%A3%85%E9%A5%B0%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">设计模式-装饰模式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-01-15 10:11:57 / 修改时间：10:20:46" itemprop="dateCreated datePublished" datetime="2021-01-15T10:11:57+08:00">2021-01-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="装饰模式decorator"><a href="#装饰模式decorator" class="headerlink" title="装饰模式decorator"></a>装饰模式decorator</h1><p>by andyau</p>
+<ul>
+<li><p>什么是装饰模式/装饰器模式？  </p>
+</li>
+<li><p>*动态（组合）地给一个对象增加一些额外的职责**。就增加功能而言，装饰模式比生成子类（使用继承）更为灵活（消除重复代码以及减少子类个数）。——《设计模式》GoF</p>
+</li>
+<li><p>单一职责<br>在软件组件的设计中，**如果责任划分不明确，使得继承得到的结果往往是随着需求的变化而导致子类急剧膨胀，同时充斥着重复代码，这时候的关键是<u>划清各部分的职责</u>**。<br>使用“单一职责”模式的设计模式，典型的有Decorator和Bridge.</p>
+</li>
+<li><p>要点</p>
+<blockquote>
+<ul>
+<li>要点一<br>通过采用<strong>组合</strong>而非继承的手法，装饰模式实现了在<strong>运行时动态扩展对象功能的能力</strong>，而且可以根据需要扩展多个功能。避免了使用继承带来的“灵活性差”和“多子类衍生问题”。</li>
+<li>要点二  </li>
+</ul>
+<p><strong>Decorator类在接口上表现为is-a Component的继承关系</strong>，即Decorator类继承了Component类的所具有的接口。<strong>但在实现上又表现为has-a Component的组合关系</strong>，即Decorator类又使用了另外一个Component类。  </p>
+<ul>
+<li>要点三<br>Decorator模式的目的并非解决“多子类衍生的多继承”问题。而是在于解决“<strong>主体类在多个方向上的扩展功能</strong>”——这就是“装饰”的意思。  </li>
+</ul>
+</blockquote>
+</li>
+<li><p>例子  </p>
+<ul>
+<li>比如有一个手机，允许你为手机添加特性，比如增加挂件、屏幕贴膜等。 </li>
+</ul>
+<p> <strong><em>手机基类</em></strong>  </p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Phone</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">Phone()&#123;&#125;</span><br><span class="line"><span class="keyword">virtual</span> ~Phone()&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">showDecorate</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>  <strong><em>手机具体类</em></strong>  </p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Nokia</span> :</span> <span class="keyword">public</span> Phone&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line"><span class="built_in">string</span> m_name;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">Nokia(<span class="built_in">string</span> name) : m_name(name)&#123;&#125;;</span><br><span class="line">~Nokia()&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">showDecorate</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s 的装饰\n&quot;</span>, <span class="keyword">this</span>-&gt;m_name);</span><br><span class="line">&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>  <strong><em>装饰类</em></strong>  </p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DecoratorPhone</span> :</span> <span class="keyword">public</span> Phone&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">Phone* m_phone;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">DecoratorPhone(Phone *phone) : m_phone(phone)&#123;&#125;;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">showDecorate</span><span class="params">()</span></span>&#123;</span><br><span class="line">    m_phone-&gt;showDecorate();</span><br><span class="line">&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>  <strong><em>具体装饰类</em></strong>  </p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DecoratorPhoneA</span> :</span> <span class="keyword">public</span> DecoratorPhone&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">DecoratorPhoneA(Phone *phone) : DecoratorPhone(phone)&#123;&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">showDecorate</span><span class="params">()</span></span>&#123;</span><br><span class="line">    DecoratorPhone::showDecorate();</span><br><span class="line">    addDecorate();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addDecorate</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;增加挂件\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DecoratorPhoneB</span> :</span> <span class="keyword">public</span> DecoratorPhone&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">DecoratorPhoneB(Phone *phone) : DecoratorPhone(phone)&#123;&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">showDecorate</span><span class="params">()</span></span>&#123;</span><br><span class="line">    DecoratorPhone::showDecorate();</span><br><span class="line">    addDecorate();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addDecorate</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;屏幕贴膜\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>  <strong><em>主函数</em></strong>  </p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">Phone *nokia = <span class="keyword">new</span> Nokia(<span class="string">&quot;a&quot;</span>);</span><br><span class="line">Phone *dpa = <span class="keyword">new</span> DecoratorPhoneA(nokia); <span class="comment">//增加挂饰</span></span><br><span class="line">Phone *dpb = <span class="keyword">new</span> DecoratorPhoneB(dpa); <span class="comment">// 增加屏幕贴膜</span></span><br><span class="line">dpb-&gt;showDecorate();</span><br><span class="line"><span class="keyword">delete</span> dpa;</span><br><span class="line"><span class="keyword">delete</span> dpb;</span><br><span class="line"><span class="keyword">delete</span> nokia;</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  <strong><em>运行结果</em></strong>  </p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a 的装饰</span><br><span class="line">增加挂件</span><br><span class="line">屏幕贴膜</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://andyaucy.github.io/2021/01/15/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Andy Au">
+      <meta itemprop="description" content="自我感觉良好往往是出现问题的征兆">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Make it Happen">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/15/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">设计模式-观察者模式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-01-15 09:58:36 / 修改时间：10:11:32" itemprop="dateCreated datePublished" datetime="2021-01-15T09:58:36+08:00">2021-01-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="观察者模式Observer"><a href="#观察者模式Observer" class="headerlink" title="观察者模式Observer"></a>观察者模式Observer</h1><p>by andyau</p>
+<ul>
+<li><p>什么是观察者模式？<br>又叫“Event”。在软件构建过程中，我们需要为某些对象建立一种<strong>通知依赖关系——一个对象（目标对象）的状态发生改变时，所有的依赖对象（观察者对象）都将得到通知</strong>。如果这样的依赖关系过于紧密，将使软件不能很好地抵御变化。<br>使用<strong>OOP技术</strong>，可以将这种依赖关系弱化，并形成一种稳定的依赖关系，从而实现软件体系结构的<strong>松耦合</strong>。<br>通俗来讲，即<strong>定义对象间的一种一对多的依赖关系，以便当一个对象的状态发生改变时，所有依赖于它的对象都得到通知并自动更新</strong>。——《设计模式》GoF</p>
+</li>
+<li><p>观察者模式四大角色</p>
+<blockquote>
+<ul>
+<li>抽象主题角色(Subject)<br>抽象主题角色提供维护一个观察者对象集合的操作方法，对集合的增加、删除等。</li>
+<li>具体主题角色(ConcreteSubject)<br>将有关状态存入具体的观察者对象；在具体主题的内部状态改变时，给所有登记过的观察者发通知。具体主题角色负责实现抽象主题中的方法。  </li>
+<li>抽象观察者角色(Obeserver)<br>为具体观察者提供一个更新接口。</li>
+<li>具体观察者角色(ConcreteObserver)<br>存储与主题有关的自洽状态，实现抽象观察者提供的更新接口。</li>
+</ul>
+</blockquote>
+</li>
+<li><p>例子  </p>
+<ul>
+<li>在教室里老师还没有来，同学都在干着各的事情，小张正在打游戏，小李正在抄作业…..,  现在同学们要求班长当卧底，监视老师，当老师来了通知大家一声。然后打游戏的马上停止，抄作业的也停止。这里班长相当于是一个通知者， 小张、小李，以及其他同学显然是监听者，他们监听了班长那的消息，一旦老师来了马上采取相关的行动。 </li>
+</ul>
+<p> <strong><em>定义监听者接口</em></strong><br> 想要监听老师来了这个消息的同学必须要实现这个接口：</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ITeacherListener</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">onTeacherComming</span><span class="params">(<span class="keyword">int</span> signal)</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>  <strong><em>定义通知者接口</em></strong><br>  班长要通知同学，要实现这个接口：</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">INotifier</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">registerListerner</span><span class="params">(ITeacherListener* l)</span> </span>= <span class="number">0</span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">removeListener</span><span class="params">(ITeacherListener *l)</span> </span>= <span class="number">0</span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">notify</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>  <strong><em>学生实现监听接口</em></strong>  </p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span> :</span> <span class="keyword">public</span> ITeacherListener&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line"><span class="keyword">char</span> name;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">Student(<span class="keyword">char</span> name)&#123;</span><br><span class="line">    <span class="keyword">this</span>-&gt;name = name;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">onTeacherComming</span><span class="params">(<span class="keyword">int</span> signal)</span></span>&#123;</span><br><span class="line">    stopDoing(signal);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">stopDoing</span><span class="params">(<span class="keyword">int</span> signal)</span></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;[%d] : %c stop doing what he&#x27;s doing...\n&quot;</span>, signal, <span class="keyword">this</span>-&gt;name);</span><br><span class="line">&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>  <strong><em>班长实现通知者接口</em></strong><br>  班长作为一个具体的通知者:</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MonitorNotifier</span> :</span> <span class="keyword">public</span> INotifier&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line"><span class="built_in">list</span>&lt;ITeacherListener*&gt; listeners;</span><br><span class="line"><span class="keyword">int</span> signal;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">registerListerner</span><span class="params">(ITeacherListener *l)</span></span>&#123;</span><br><span class="line">    listeners.push_back(l);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">removeListener</span><span class="params">(ITeacherListener *l)</span></span>&#123;</span><br><span class="line">    <span class="built_in">list</span>&lt;ITeacherListener*&gt;::iterator it;</span><br><span class="line">    <span class="keyword">for</span> (it = listeners.begin(); it != listeners.end(); it++)&#123;</span><br><span class="line">        <span class="keyword">if</span> (*it == l)&#123;</span><br><span class="line">            listeners.remove(l);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">notify</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">list</span>&lt;ITeacherListener*&gt;::iterator it;</span><br><span class="line">    <span class="keyword">for</span> (it = listeners.begin(); it != listeners.end(); it++)&#123;</span><br><span class="line">        (*it)-&gt;onTeacherComming(<span class="keyword">this</span>-&gt;signal);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setSignal</span><span class="params">(<span class="keyword">int</span> signal)</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>-&gt;signal = signal;</span><br><span class="line">    notify();</span><br><span class="line">&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>  <strong><em>主函数</em></strong></p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;1st\n&quot;</span>);</span><br><span class="line">MonitorNotifier monitor;</span><br><span class="line">Student *A = <span class="keyword">new</span> Student(<span class="string">&#x27;A&#x27;</span>);</span><br><span class="line">Student *B = <span class="keyword">new</span> Student(<span class="string">&#x27;B&#x27;</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;Register A\n&quot;</span>);</span><br><span class="line">monitor.registerListerner(A);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;Register B\n&quot;</span>);</span><br><span class="line">monitor.registerListerner(B);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;teacher&#x27;s comming...monitor send a signal &#x27;1&#x27;\n&quot;</span>);</span><br><span class="line">monitor.setSignal(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;2nd\n&quot;</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;Remove B\n&quot;</span>);</span><br><span class="line">monitor.removeListener(B);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;teacher&#x27;s comming...monitor send a signal &#x27;2&#x27;\n&quot;</span>);</span><br><span class="line">monitor.setSignal(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  <strong><em>运行结果</em></strong>  </p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">1st</span><br><span class="line">Register A</span><br><span class="line">Register B</span><br><span class="line">teacher&#39;s comming...monitor send a signal &#39;1&#39;</span><br><span class="line">[1] : A stop doing what he&#39;s doing...</span><br><span class="line">[1] : B stop doing what he&#39;s doing...</span><br><span class="line">2nd</span><br><span class="line">Remove B</span><br><span class="line">teacher&#39;s comming...monitor send a signal &#39;2&#39;</span><br><span class="line">[2] : A stop doing what he&#39;s doing...</span><br></pre></td></tr></table></figure></li>
+<li><p>要点</p>
+<blockquote>
+<ul>
+<li>要点一<br>使用<strong>面向对象</strong>的抽象,观察者模式使得我们可以<u>独立地改变目标与观察者</u>，从而使二者之间的依赖关系<strong>松耦合</strong>。</li>
+<li>要点二<br>目标发送通知时，无需指定观察者，通知（可以携带通知信息作为参数）会自动传播。</li>
+<li>要点三<br>观察者自己决定是否需要订阅通知，目标对象对此一无所知。</li>
+<li>要点四<br>观察者模式是<strong>基于事件的UI框架</strong>中非常常用的设计模式，也是<strong>MVC模式</strong>的一个重要组成部分。</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://andyaucy.github.io/2021/01/15/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -188,7 +400,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-01-15 09:27:36 / 修改时间：09:48:57" itemprop="dateCreated datePublished" datetime="2021-01-15T09:27:36+08:00">2021-01-15</time>
+              <time title="创建时间：2021-01-15 09:27:36 / 修改时间：09:58:02" itemprop="dateCreated datePublished" datetime="2021-01-15T09:27:36+08:00">2021-01-15</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -215,7 +427,7 @@
 <ul>
 <li><p>什么是策略模式？  </p>
 <blockquote>
-<p>定义一系列算法，把他们一个个封装起来，并且是他们可互相替换；该模式使得算法可独立于使用它的客户程序（稳定）而变化（扩展、子类化）。——《设计模式》GoF  <img src="strategy.png" alt="uml"></p>
+<p>定义一系列算法，把他们一个个封装起来，并且是他们可互相替换；该模式使得算法可独立于使用它的客户程序（稳定）而变化（扩展、子类化）。——《设计模式》GoF</p>
 </blockquote>
 </li>
 <li><p>要点</p>
@@ -458,7 +670,7 @@ int main ()&#123;
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
